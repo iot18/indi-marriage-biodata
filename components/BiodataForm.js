@@ -1,14 +1,13 @@
 // pages/index.js
-
-// import DynamicForm from "../components/DynamicForm";
-import { Grid } from "@mantine/core";
+import { Grid, Button } from "@mantine/core";
 import { useState } from "react";
 import { CASTES } from "./caste.js";
 import ProfileImagesManager from "./ProfileImagesManager";
 import SchemaForm from "./SchemaForm";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import MyPdfDocument from "./pdfdoc.js";
 import logosrc from "../public/ganesha.png";
+import { pdf } from "@react-pdf/renderer";
+
 const uniqueCapitalizedCastes = [
   ...new Set(
     CASTES.map((caste) =>
@@ -26,13 +25,9 @@ const uniqueCapitalizedCastes = [
 
 const dietaryPreferences = [
   "Vegetarian",
-
   "Vegan",
-
   "Eggetarian",
-
   "Non-vegetarian",
-
   "Jain",
 ];
 
@@ -48,8 +43,9 @@ const rashis = [
   "Dhanu (Sagittarius)",
   "Makar (Capricorn)",
   "Kumbh (Aquarius)",
-  "Meen (Pisces)]",
+  "Meen (Pisces)",
 ];
+
 const formSchema = {
   personal: [
     { name: "fullName", label: "Full Name", type: "text" },
@@ -59,15 +55,7 @@ const formSchema = {
       name: "religion",
       label: "Religion",
       type: "select",
-      values: [
-        "Hindu",
-        "Muslim",
-        "Christian",
-        "Sikh",
-        "Jain",
-        "Buddhist",
-        "Other",
-      ],
+      values: ["Hindu", "Muslim", "Christian", "Sikh", "Jain", "Buddhist", "Other"],
     },
     {
       name: "caste",
@@ -87,7 +75,6 @@ const formSchema = {
     { name: "salary", label: "Salary", type: "text" },
     { name: "location", label: "Location", type: "text" },
     { name: "complexion", label: "Complexion", type: "text" },
-
     { name: "matrimonyNumber", label: "Matrimony ID Number", type: "text" },
   ],
   family: [
@@ -119,12 +106,26 @@ export default function HomePage() {
     nakshatra: null,
   });
 
-  const [pdfData, setPdfData] = useState(null);
-  const handleFormSubmit = (values) => {
-    // Combine form values and images as needed
-    console.log("Form Data:", values, "Images:", images);
-    setPdfData({ formSchema, formData: values, images }); // Save in state for
+  const handleFormSubmit = async (values) => {
+    const doc = (
+      <MyPdfDocument
+        formSchema={formSchema}
+        formData={values}
+        images={images}
+        logoSrc={logosrc}
+      />
+    );
+
+    const blob = await pdf(doc).toBlob();
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "profile.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
+
   return (
     <>
       <h4>Enter your details (Easy convert to PDF , JPEG)</h4>
@@ -136,23 +137,6 @@ export default function HomePage() {
           <ProfileImagesManager images={images} setImages={setImages} />
         </Grid.Col>
       </Grid>
-      {pdfData && (
-        <PDFDownloadLink
-          document={
-            <MyPdfDocument
-              formSchema={pdfData.formSchema}
-              formData={pdfData.formData}
-              images={pdfData.images}
-              logoSrc={logosrc}
-            />
-          }
-          fileName="profile.pdf"
-        >
-          {({ loading }) =>
-            loading ? "Preparing document..." : "Download PDF"
-          }
-        </PDFDownloadLink>
-      )}
     </>
   );
 }
