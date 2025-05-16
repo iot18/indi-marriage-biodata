@@ -6,10 +6,7 @@ export default function Navbar() {
       <Container size="lg" py="md">
         <Group justify="space-between" align="center">
           <Group gap="xs">
-            <Title order={2} fw={700} c="blue">Biodata Maker</Title>
-          </Group>
-          <Group gap="lg">
-            <Anchor href="#" c="dimmed" fz="sm" fw={500}>About</Anchor>
+            <Title order={2} fw={700} c="blue">Indian Biodata Maker</Title>
           </Group>
         </Group>
       </Container>

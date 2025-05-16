@@ -9,6 +9,7 @@ import {
   SimpleGrid,
   Box,
   Group,
+  Stack,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
@@ -16,7 +17,6 @@ import { useForm } from "@mantine/form";
 const STORAGE_KEY = "profile_form_data";
 
 export default function SchemaForm({ formSchema, onSubmit }) {
-  // Compute initial values from schema
   const initialValues = Object.fromEntries(
     Object.entries(formSchema).map(([section, fields]) => [
       section,
@@ -24,7 +24,6 @@ export default function SchemaForm({ formSchema, onSubmit }) {
     ])
   );
 
-  // Load from localStorage if present
   const stored =
     typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
   const parsedStored = stored ? JSON.parse(stored) : null;
@@ -33,53 +32,54 @@ export default function SchemaForm({ formSchema, onSubmit }) {
     initialValues: parsedStored || initialValues,
   });
 
-  // Save to localStorage on value change
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(form.values));
   }, [form.values]);
 
-  // Clear function
   const handleClear = () => {
-    form.setValues(initialValues); // Reset form
+    form.setValues(initialValues);
     localStorage.removeItem(STORAGE_KEY);
-    // Optionally force reload for full reset:
-    // window.location.reload();
   };
 
   const renderSection = (sectionName, sectionFields) => (
     <Card
       key={sectionName}
-      shadow="sm"
-      padding="lg"
-      style={{ marginBottom: "20px" }}
+      shadow="xs"
+      padding="md"
+      radius="md"
+      style={{ marginBottom: "16px" }}
     >
-      <Title order={3}>
+      <Title order={4} mb="sm">
         {sectionName.charAt(0).toUpperCase() + sectionName.slice(1)}
       </Title>
-      <SimpleGrid cols={2} spacing="lg" mt="md">
+      <SimpleGrid
+        cols={{ base: 1, sm: 2 }}
+        spacing="sm"
+        breakpoints={[{ maxWidth: "sm", cols: 1 }]}
+      >
         {sectionFields.map((field) => (
           <Box key={field.name}>
             {field.type === "textarea" ? (
               <Textarea
+                size="sm"
                 label={field.label}
                 {...form.getInputProps(`${sectionName}.${field.name}`)}
-                required={true ? field?.required : false}
               />
             ) : field.type === "select" && Array.isArray(field.values) ? (
               <Select
+                size="sm"
                 label={field.label}
                 data={field.values}
-                {...form.getInputProps(`${sectionName}.${field.name}`)}
-                required={true ? field?.required : false}
-                limit={20}
                 searchable
+                limit={20}
+                {...form.getInputProps(`${sectionName}.${field.name}`)}
               />
             ) : (
               <TextInput
+                size="sm"
                 label={field.label}
                 type={field.type}
                 {...form.getInputProps(`${sectionName}.${field.name}`)}
-                required={true ? field?.required : false}
               />
             )}
           </Box>
@@ -90,22 +90,19 @@ export default function SchemaForm({ formSchema, onSubmit }) {
 
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
-      {Object.keys(formSchema).map((section) =>
-        renderSection(section, formSchema[section])
-      )}
-      <Group mt="lg" position="apart">
-        <Button
-          color="red"
-          variant="outline"
-          onClick={handleClear}
-          type="button"
-        >
-          Clear locally
-        </Button>
-        <Button type="submit" color="blue">
-          Download PDF
-        </Button>
-      </Group>
+      <Stack spacing="sm">
+        {Object.keys(formSchema).map((section) =>
+          renderSection(section, formSchema[section])
+        )}
+        <Group position="apart" grow>
+          <Button variant="outline" color="red" onClick={handleClear}>
+            Clear
+          </Button>
+          <Button type="submit" color="blue">
+            Download PDF
+          </Button>
+        </Group>
+      </Stack>
     </form>
   );
 }
