@@ -48,9 +48,9 @@ const rashis = [
 
 const formSchema = {
   personal: [
-    { name: "fullName", label: "Full Name", type: "text" },
-    { name: "dob", label: "Date of Birth", type: "datetime-local" },
-    { name: "height", label: "Height", type: "text" },
+    { name: "fullName", label: "Full Name", type: "text",required:1 },
+    { name: "dob", label: "Date of Birth", type: "datetime-local",required:1 },
+    { name: "height", label: "Height", type: "text",required:1 },
     {
       name: "religion",
       label: "Religion",
@@ -69,11 +69,11 @@ const formSchema = {
       type: "select",
       values: dietaryPreferences,
     },
-    { name: "education", label: "Education", type: "text" },
-    { name: "occupation", label: "Occupation", type: "text" },
+    { name: "education", label: "Education", type: "text",required:1 },
+    { name: "occupation", label: "Occupation", type: "text",required:1 },
     { name: "visa", label: "Visa Status", type: "text" },
     { name: "salary", label: "Salary", type: "text" },
-    { name: "location", label: "Location", type: "text" },
+    { name: "location", label: "Location", type: "text",required:1 },
     { name: "complexion", label: "Complexion", type: "text" },
     { name: "matrimonyNumber", label: "Matrimony ID Number", type: "text" },
   ],
@@ -91,7 +91,7 @@ const formSchema = {
     { name: "mgotra", label: "Maternal Gotra", type: "text" },
   ],
   contact: [
-    { name: "number", label: "Number", type: "text" },
+    { name: "number", label: "Number", type: "text",required:1 },
     { name: "email", label: "Email", type: "text" },
     { name: "address", label: "Address", type: "text" },
   ],

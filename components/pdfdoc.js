@@ -23,7 +23,6 @@ function getSectionFields(formSchema, formData) {
   }
   return result;
 }
-
 function processSpecialFields(fieldName, value) {
   if (fieldName === "address" || fieldName === "siblings") {
     return value
@@ -31,6 +30,21 @@ function processSpecialFields(fieldName, value) {
       .map((item) => item.trim())
       .join("\n");
   }
+
+  if (fieldName === "dob") {
+    console.log(value)
+    const date = new Date(value);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    };
+    return date.toLocaleString("en-US", options);
+  }
+
   return value;
 }
 
@@ -59,7 +73,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 8,
-    padding:10,
+    padding: 10,
   },
   sectionTitle: {
     fontSize: 14,
@@ -78,7 +92,6 @@ const styles = StyleSheet.create({
     width: 130,
     flexDirection: "row",
     justifyContent: "flex-start",
-    
   },
   label: {
     color: "#FFFFFF",
@@ -88,7 +101,7 @@ const styles = StyleSheet.create({
     width: 6,
     textAlign: "center",
     color: "#FFFFFF",
-    marginLeft:4
+    marginLeft: 4,
   },
   value: {
     flex: 1,

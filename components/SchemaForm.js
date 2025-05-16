@@ -103,7 +103,7 @@ export default function SchemaForm({ formSchema, onSubmit }) {
           Clear locally
         </Button>
         <Button type="submit" color="blue">
-          Submit
+          Download PDF
         </Button>
       </Group>
     </form>
