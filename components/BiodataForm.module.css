@@ -1,0 +1,41 @@
+/* BiodataForm.module.css */
+.container {
+    padding: 3rem 1rem;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .biodataSection {
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .section {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    background-color: #fefefe;
+  }
+  
+  .section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+  
+  .hobbyItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .headerPreview {
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  

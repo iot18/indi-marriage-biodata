@@ -1,23 +1,37 @@
-import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import BiodataForm from "../components/BiodataForm";
+import { createTheme, MantineProvider } from "@mantine/core";
+import { AppShell, Burger } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
 
 export default function Home() {
+  const [opened, { toggle }] = useDisclosure();
+
   return (
-    <div className="container">
-      <Head>
-        <title>Next.js Starter!</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <MantineProvider theme={theme}>
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{
+          width: 300,
+          breakpoint: "sm",
+          collapsed: { mobile: !opened },
+        }}
+        padding="md"
+      >
+        <AppShell.Header>
+          <Navbar />
+        </AppShell.Header>
 
-      <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-      </main>
 
-      <Footer />
-    </div>
-  )
+        <AppShell.Main>
+          <BiodataForm />
+        </AppShell.Main>
+      </AppShell>
+    </MantineProvider>
+  );
 }
