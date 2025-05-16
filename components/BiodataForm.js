@@ -148,7 +148,7 @@ export default function HomePage() {
         </Paper>
 
         <Text size="md" fw={600} mt="md">
-          Enter your details (Easy convert to PDF, JPEG)
+          Enter your details (Easy convert to PDF)
         </Text>
 
         <Grid gutter="lg">
