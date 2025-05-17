@@ -10,6 +10,7 @@ import {
   Title,
   Box,
   Divider,
+  Drawer,
 } from "@mantine/core";
 import { useState } from "react";
 import ProfileImagesManager from "./ProfileImagesManager";
@@ -19,9 +20,9 @@ import logosrc from "../public/ganesha.png";
 import { pdf } from "@react-pdf/renderer";
 import image from "../public/sample_profile_pdf.jpg";
 import Image from "next/image";
-import { FORM_SCHEMA_BASE as  initialFormSchema } from "./form_helper";
+import { FORM_SCHEMA_BASE as initialFormSchema } from "./form_helper";
 import AdvancedSettingsModal from "./AdvancedSettingsModal";
-import { IconSettings } from "@tabler/icons-react";
+import { IconSettings, IconPhoto } from "@tabler/icons-react";
 
 export default function HomePage() {
   const [settings, setSettings] = useState({
@@ -29,6 +30,7 @@ export default function HomePage() {
   });
 
   const [advancedModalOpen, setAdvancedModalOpen] = useState(false);
+  const [mobileAsideOpen, setMobileAsideOpen] = useState(false);
 
   const [images, setImages] = useState({
     profile1: null,
@@ -125,26 +127,39 @@ export default function HomePage() {
         </Text>
 
         <Grid gutter="lg">
+          {/* Form and controls */}
           <Grid.Col span={{ base: 12, md: 9 }}>
-            <Center>
-              <Button
-                variant="outline"
-                color="gray"
-                leftSection={<IconSettings size={16} />}
-                onClick={() => setAdvancedModalOpen(true)}
-              >
-                Advanced Settings
-              </Button>
-            </Center>
+            <Stack spacing="sm">
+              <Group justify="center">
+                <Button
+                  variant="outline"
+                  color="gray"
+                  leftSection={<IconSettings size={16} />}
+                  onClick={() => setAdvancedModalOpen(true)}
+                >
+                  Advanced Settings
+                </Button>
 
-            <SchemaForm
-              formSchema={formSchema}
-              setFormSchema={setFormSchema}
-              onSubmit={handleFormSubmit}
-            />
+                <Button
+                  variant="outline"
+                  color="blue"
+                  leftSection={<IconPhoto size={16} />}
+                  hiddenFrom="md" // ✅ show only on mobile
+                  onClick={() => setMobileAsideOpen(true)}
+                >
+                  Manage Images
+                </Button>
+              </Group>
+
+              <SchemaForm
+                formSchema={formSchema}
+                setFormSchema={setFormSchema}
+                onSubmit={handleFormSubmit}
+              />
+            </Stack>
           </Grid.Col>
 
-          <Grid.Col span={{ base: 12, md: 3 }}>
+          <Grid.Col span={{ base: 12, md: 3 }} visibleFrom="md">
             <ProfileImagesManager images={images} setImages={setImages} />
           </Grid.Col>
         </Grid>
@@ -164,12 +179,26 @@ export default function HomePage() {
         </Center>
       </Stack>
 
+      {/* Advanced Settings Modal */}
       <AdvancedSettingsModal
         opened={advancedModalOpen}
         onClose={() => setAdvancedModalOpen(false)}
         settings={settings}
         setSettings={setSettings}
       />
+
+      {/* Mobile Drawer for Profile Image Manager */}
+      <Drawer
+        opened={mobileAsideOpen}
+        onClose={() => setMobileAsideOpen(false)}
+        title="Manage Profile Images"
+        padding="md"
+        size="md"
+        position="right"
+        hiddenFrom="md"
+      >
+        <ProfileImagesManager images={images} setImages={setImages} />
+      </Drawer>
     </Container>
   );
 }
