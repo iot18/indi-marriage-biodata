@@ -2,32 +2,27 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BiodataForm from "../components/BiodataForm";
 import { createTheme, MantineProvider } from "@mantine/core";
-import { AppShell, Burger } from "@mantine/core";
+import { AppShell, rem } from '@mantine/core';
+import { useHeadroom } from '@mantine/hooks';
 import { useDisclosure } from "@mantine/hooks";
 
 
-const theme = createTheme({
-  /** Put your mantine theme override here */
-});
-
 export default function Home() {
   const [opened, { toggle }] = useDisclosure();
+  const pinned = useHeadroom({ fixedAt: 120 });
 
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider defaultColorScheme="dark">
       <AppShell
-        header={{ height: 60 }}
-        navbar={{
-          width: 300,
-          breakpoint: "sm",
-          collapsed: { mobile: !opened },
-        }}
+        header={{ height: 60, collapsed: !pinned, offset: false }}
         padding="md"
       >
         <AppShell.Header>
           <Navbar />
-        </AppShell.Header>        
+        </AppShell.Header>
+        <AppShell.Main pt={`calc(${rem(60)} + var(--mantine-spacing-md))`}>
           <BiodataForm />
+        </AppShell.Main>
       </AppShell>
     </MantineProvider>
   );

@@ -59,9 +59,25 @@ export default function HomePage() {
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Title order={2}>Create Your Biodata Easily & Privately</Title>
               <Text mt="sm" size="md" color="dimmed">
-                This biodata maker does <strong>not store any data on the cloud</strong>.
-                All data is saved only in your browser and is <strong>cleared locally</strong>.
-                It's safe, private, and offline. Convert to PDF with just a few clicks.
+                <strong style={{ color: "#2b8a3e" }}>
+                  100% Free, Private & Offline.
+                </strong>
+                <br />
+                This biodata maker{" "}
+                <strong style={{ color: "#e03131" }}>
+                  does not store, upload, or publish your data
+                </strong>{" "}
+                in any form—no cloud, no servers.
+                <br />
+                All data stays <strong>only in your browser</strong> and is{" "}
+                <strong>cleared automatically</strong> once closed.
+                <br />
+                You are always in full control. Just fill your details and
+                <strong style={{ color: "#1971c2" }}>
+                  {" "}
+                  generate your biodata PDF securely
+                </strong>{" "}
+                in seconds.
               </Text>
             </Grid.Col>
 
