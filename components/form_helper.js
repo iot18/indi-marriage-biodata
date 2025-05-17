@@ -88,6 +88,7 @@ export const FORM_SCHEMA_BASE = {
     { name: "location", label: "Location", type: "text", required: 1 },
     { name: "complexion", label: "Complexion", type: "text" },
     { name: "matrimonyNumber", label: "Matrimony ID Number", type: "text" },
+    { name: "hobbies", label: "Hobbies", type: "text" },
   ],
   family: [
     { name: "fatherName", label: "Father's Name", type: "text" },
