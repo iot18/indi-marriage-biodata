@@ -59,6 +59,12 @@ export default function HomePage() {
     link.download = "profile.pdf";
     document.body.appendChild(link);
     link.click();
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "file_download", {
+        file_name: "profile.pdf",
+        method: "manual_click",
+      });
+    }
     link.remove();
   };
 
