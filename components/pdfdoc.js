@@ -10,21 +10,50 @@ import {
 // Flatten and filter form data by section
 function getSectionFields(formSchema, formData) {
   const result = {};
+
+  const calculateAge = (dobString) => {
+    const dob = new Date(dobString);
+    const today = new Date();
+    let years = today.getFullYear() - dob.getFullYear();
+    let months = today.getMonth() - dob.getMonth();
+
+    if (months < 0 || (months === 0 && today.getDate() < dob.getDate())) {
+      years--;
+      months += 12;
+    }
+
+    return `${years} years ${months} months`;
+  };
+
   for (const section in formSchema) {
     const fields = [];
     for (const field of formSchema[section]) {
       const value = formData[section]?.[field.name];
+
       if (value && value !== "" && value !== "0") {
         const processedValue = processSpecialFields(field.name, value);
         fields.push({ label: field.label, value: processedValue });
+
+        // ⏱️ Add calculated age next to DOB
+        if (field.name === "dob") {
+          const ageStr = calculateAge(value);
+          fields.push({ label: "Age", value: ageStr });
+        }
       }
     }
+
     if (fields.length) result[section] = fields;
   }
+
   return result;
 }
+
 function processSpecialFields(fieldName, value) {
-  if (fieldName === "address" || fieldName === "siblings") {
+  if (
+    typeof value === "string" &&
+    value.length > 30 &&
+    value.includes(",")
+  ) {
     return value
       .split(",")
       .map((item) => item.trim())
@@ -32,7 +61,7 @@ function processSpecialFields(fieldName, value) {
   }
 
   if (fieldName === "dob") {
-    console.log(value)
+    console.log(value);
     const date = new Date(value);
     const options = {
       year: "numeric",
@@ -48,11 +77,13 @@ function processSpecialFields(fieldName, value) {
   return value;
 }
 
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: 4,
     fontSize: 10,
     fontFamily: "Helvetica",
     backgroundColor: "#0747A6",
@@ -72,8 +103,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   section: {
-    marginBottom: 8,
-    padding: 10,
+    marginBottom: 4,
+    paddingHorizontal: 10,
+    paddingTop: 4,
   },
   sectionTitle: {
     fontSize: 14,
@@ -87,6 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     marginVertical: 2,
+    marginLeft: 2,
   },
   labelContainer: {
     width: 130,
@@ -102,6 +135,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
     marginLeft: 4,
+    marginRight: 4,
   },
   value: {
     flex: 1,
@@ -162,6 +196,19 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
     right: 10,
+  },
+  footerText: {
+    fontSize: 8,
+    marginBottom: 4,
+    fontWeight: "bold",
+    fontFamily: "Helvetica-Bold",
+    color: "#FFFFFF",
+  },
+  footerTextLink: {
+    fontSize: 8,
+    marginBottom: 4,
+    fontFamily: "Helvetica-Bold",
+    color: "#FFFFFF",
   },
 });
 
@@ -227,6 +274,12 @@ const MyPdfDocument = ({ formSchema, formData, images, logoSrc }) => {
               ))
             )}
           </View>
+        </View>
+        <View style={styles.header}>
+          <Text style={styles.footerText}>Created at</Text>
+          <Text style={styles.footerTextLink}>
+            https://indi-marriage-biodata.netlify.app/
+          </Text>
         </View>
       </Page>
     </Document>
