@@ -38,7 +38,7 @@ export const rashis = [
   "Meen (Pisces)",
 ];
 
-export const formSchema = {
+export const FORM_SCHEMA_BASE = {
   personal: [
     { name: "fullName", label: "Full Name", type: "text", required: 1 },
     {

@@ -14,14 +14,22 @@ import {
 import { useState } from "react";
 import ProfileImagesManager from "./ProfileImagesManager";
 import SchemaForm from "./SchemaForm";
-import MyPdfDocument from "./pdfdoc.js";
+import MyPdfDocument from "./pdfdoc";
 import logosrc from "../public/ganesha.png";
 import { pdf } from "@react-pdf/renderer";
 import image from "../public/sample_profile_pdf.jpg";
 import Image from "next/image";
-import { formSchema } from "./form_helper";
+import { FORM_SCHEMA_BASE as  initialFormSchema } from "./form_helper";
+import AdvancedSettingsModal from "./AdvancedSettingsModal";
+import { IconSettings } from "@tabler/icons-react";
 
 export default function HomePage() {
+  const [settings, setSettings] = useState({
+    primaryColor: "#0747A6",
+  });
+
+  const [advancedModalOpen, setAdvancedModalOpen] = useState(false);
+
   const [images, setImages] = useState({
     profile1: null,
     profile2: null,
@@ -30,6 +38,8 @@ export default function HomePage() {
     nakshatra: null,
   });
 
+  const [formSchema, setFormSchema] = useState(initialFormSchema);
+
   const handleFormSubmit = async (values) => {
     const doc = (
       <MyPdfDocument
@@ -37,11 +47,11 @@ export default function HomePage() {
         formData={values}
         images={images}
         logoSrc={logosrc}
+        settings={settings}
       />
     );
 
     const blob = await pdf(doc).toBlob();
-
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = "profile.pdf";
@@ -116,8 +126,24 @@ export default function HomePage() {
 
         <Grid gutter="lg">
           <Grid.Col span={{ base: 12, md: 9 }}>
-            <SchemaForm formSchema={formSchema} onSubmit={handleFormSubmit} />
+            <Center>
+              <Button
+                variant="outline"
+                color="gray"
+                leftSection={<IconSettings size={16} />}
+                onClick={() => setAdvancedModalOpen(true)}
+              >
+                Advanced Settings
+              </Button>
+            </Center>
+
+            <SchemaForm
+              formSchema={formSchema}
+              setFormSchema={setFormSchema}
+              onSubmit={handleFormSubmit}
+            />
           </Grid.Col>
+
           <Grid.Col span={{ base: 12, md: 3 }}>
             <ProfileImagesManager images={images} setImages={setImages} />
           </Grid.Col>
@@ -137,6 +163,13 @@ export default function HomePage() {
           </Group>
         </Center>
       </Stack>
+
+      <AdvancedSettingsModal
+        opened={advancedModalOpen}
+        onClose={() => setAdvancedModalOpen(false)}
+        settings={settings}
+        setSettings={setSettings}
+      />
     </Container>
   );
 }

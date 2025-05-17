@@ -49,11 +49,7 @@ function getSectionFields(formSchema, formData) {
 }
 
 function processSpecialFields(fieldName, value) {
-  if (
-    typeof value === "string" &&
-    value.length > 30 &&
-    value.includes(",")
-  ) {
+  if (typeof value === "string" && value.length > 30 && value.includes(",")) {
     return value
       .split(",")
       .map((item) => item.trim())
@@ -76,7 +72,6 @@ function processSpecialFields(fieldName, value) {
 
   return value;
 }
-
 
 const styles = StyleSheet.create({
   page: {
@@ -220,13 +215,15 @@ const IMAGE_LABELS = {
   nakshatra: "Horoscope Chart",
 };
 
-const MyPdfDocument = ({ formSchema, formData, images, logoSrc }) => {
+const MyPdfDocument = ({ formSchema, formData, images, logoSrc, settings }) => {
   const sectionFields = getSectionFields(formSchema, formData);
   const imageEntries = Object.entries(images).filter(([_, src]) => !!src);
 
+  const primaryColor = settings?.primaryColor || "#2b8a3e";
+
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={[styles.page, { backgroundColor: primaryColor }]}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Om Namah Shivaya</Text>
           {logoSrc && <Image src={logoSrc} style={styles.logo} />}
