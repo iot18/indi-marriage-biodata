@@ -75,7 +75,7 @@ export default function HomePage() {
         <Paper shadow="xs" p="xl" radius="md" withBorder>
           <Grid align="center">
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Title order={2}>Create Your Biodata Easily & Privately</Title>
+              <Title order={1}>Create Your Biodata Easily & Privately</Title>
               <Text mt="sm" size="md" color="dimmed">
                 <strong style={{ color: "#2b8a3e" }}>
                   100% Free, Private & Offline.

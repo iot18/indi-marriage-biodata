@@ -13,9 +13,14 @@ function Application({ Component, pageProps }) {
   return (
     <>
       <Head>
+        <title>Indian Biodata Maker - Create Your Biodata PDF</title>
         <meta
           name="google-site-verification"
           content="yDhoOvTZGPTnGdTsjGqGYh8uhwLwxK6l3t_WVgkgDhM"
+        />
+        <meta
+          name="description"
+          content="100% Free, Private & Offline Biodata Generator. Securely create and download your biodata PDF in seconds with complete privacy."
         />
       </Head>
 
