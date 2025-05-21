@@ -179,7 +179,7 @@ export default function HomePage() {
               For feedback, contact:
             </Text>
             <Text size="sm" fw={600}>
-              hruday.iotware@gmail.com
+              thunderbouys@gmail.com
             </Text>
           </Group>
         </Center>
